@@ -144,7 +144,6 @@ namespace Rampart
                     _grid.Visible = !_grid.Visible;
                     break;
                 case Keys.Space:
-                    // TODO: Fire cannon!
                     FireCannonBall(0);
                     break;
                 case Keys.Up:
@@ -166,9 +165,22 @@ namespace Rampart
 
         private void FireCannonBall(int player)
         {
-            var ball = new CannonBall();
+            var cannons = GetCannonsForPlayer(player, true);
+            foreach (var cannon in cannons)
+            {
+                var ball = new CannonBall(cannon.ID, _grid.CellSize, cannon.RealPosition, _player1Crosshair.RealPosition, cannon.CannonSpeed);
+                cannon.HasFired = true;
+                _actors.Add(ball);
+                break;
+            }
+        }
 
-            _actors.Add(ball);
+        private IEnumerable<PlayerCannon> GetCannonsForPlayer(int player, bool onlyFreeCannons)
+        {
+            if (onlyFreeCannons)
+                return _actors.Where(a => a is PlayerCannon && ((PlayerCannon)a).PlayerOwner == player && ((PlayerCannon)a).HasFired == false).Cast<PlayerCannon>();
+            else
+                return _actors.Where(a => a is PlayerCannon && ((PlayerCannon)a).PlayerOwner == player).Cast<PlayerCannon>();
         }
 
         private void GameForm_OnKeyUp(object sender, KeyEventArgs args)

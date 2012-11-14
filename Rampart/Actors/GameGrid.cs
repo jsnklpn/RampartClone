@@ -14,6 +14,7 @@ namespace Rampart.Actors
         public int CellNumVertical { get; private set; }
         public float CellHeight { get; private set; }
         public float CellWidth { get; private set; }
+        public PointF CellSize { get { return new PointF(CellWidth, CellHeight); } }
 
         public GameGrid(int numCellsHorizontal, int numCellsVertical, Rectangle rect)
             : base(rect.Height, rect.Width, rect.X, rect.Y)

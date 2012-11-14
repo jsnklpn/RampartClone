@@ -12,15 +12,23 @@ namespace Rampart.Actors
 {
     public class PlayerCannon : KillableGameObjectBase
     {
+        private static int UIDCounter = 0;
+        private int _cannonUID;
+
         public int PlayerOwner { get; set; }
         public Pen CannonPen { get; set; }
         public int CannonLength { get; set; }
-
+        public bool HasFired { get; set; }
+        public float CannonSpeed { get; set; }
+        public int ID { get { return _cannonUID; } }
         public IGameObject ObjectToPointAt { get; set; }
 
         public PlayerCannon(int owner)
         {
+            _cannonUID = UIDCounter++;
             PlayerOwner = owner;
+            HasFired = false;
+            CannonSpeed = 7.0f;
             ObjectToPointAt = null;
             HitPoints = 100;
             CannonPen = new Pen(this.Pen.Color, this.Pen.Width * 5);
